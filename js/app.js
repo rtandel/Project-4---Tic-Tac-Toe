@@ -25,7 +25,7 @@ startButton.onclick = function() {
   var boxArray = [];
   for (var i = 0; i < individualBoxes.length; i++) {
     boxArray.push(i);
-    individualBoxes[i].backgroundImage = "none";
+    individualBoxes[i].style.backgroundImage = "";
     individualBoxes[i].className = "box";
     counter = 0;
   }
@@ -72,7 +72,6 @@ function boxHover(e) {
       if (xo === 0) {
         background = "url('img/o.svg')";
         e.target.style.backgroundImage= background;
-        console.log(e.target);
       } else {
         background = "url('img/x.svg')";
         e.target.style.backgroundImage = background;
@@ -126,7 +125,13 @@ function boxSelect(e) {
     }
   }
   if (counter === 9) {
-    gameOver();
+    if (checkWin("box box-filled-1")) {
+        gameOver(player1);
+    } else if (checkWin("box box-filled-2")) {
+        gameOver(player2);
+    } else {
+        gameOver();
+    }
   }
   e.stopPropagation();
 }
