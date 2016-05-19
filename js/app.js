@@ -28,8 +28,9 @@ startButton.onclick = function() {
     individualBoxes[i].backgroundImage = "none";
     individualBoxes[i].className = "box";
     counter = 0;
-    xo = 0;
   }
+  xo = 0;
+  currentPlayer = player.currentPlayer(xo);
 }
 
 // The player constructor
