@@ -1,10 +1,16 @@
+// Uses the Module Pattern as well as 'use strict'
 (function() {
 'use strict';
+
+// Add the start screen and win
+document.body.innerHTML += '<div class="screen screen-start" id="start"><header><h1>Tic Tac Toe</h1><a href="#" class="button">Start game</a></header></div>'
+document.body.innerHTML += '<div class="screen screen-win" id="finish"><header><h1>Tic Tac Toe</h1><p class="message"></p><a href="#" class="button">New game</a></header></div>'
+
 //1. Hide the game board and display start screen.
-var startScreen = document.getElementById("start");                // The Start Screen
+var startScreen = document.getElementById("start");               // The Start Screen
 var startButton = document.getElementsByClassName("button")[0];   // The Start Button
 var gameBoard = document.getElementById("board");                 // The game board
-var finishGame = document.getElementById("finish");
+var finishGame = document.getElementById("finish");               // The end game screen.
 
 // The tic-tac-toe boxes
 var boxes = document.querySelector(".boxes");
@@ -15,14 +21,15 @@ gameBoard.style.display = 'none';
 finishGame.style.display = "none";
 //2. When the start button is clicked, hide the start screen.
 startButton.onclick = function() {
+  // When the game starts, hide everything but the gameboard.
   startScreen.style.display = 'none';
-  finishGame.style.display = "none"
+  finishGame.style.display = "none";
   gameBoard.style.display = 'block';
 
-  finishGame.className = "screen screen-win";
 
   // Takes in each box as an index to be compared with one another.
   var boxArray = [];
+  // Resets the boxes and counter.
   for (var i = 0; i < individualBoxes.length; i++) {
     boxArray.push(i);
     individualBoxes[i].style.backgroundImage = "";
@@ -99,21 +106,26 @@ function boxOut(e) {
 
 
 
-
+// Keeps track of how many boxes have been selected.
 var counter = 0;
+// Every time a box is selected.
 function boxSelect(e) {
   if (e.target !== e.currentTarget) {
+    // To check if the box is already selected or filled in.
     if (e.target.className !== "box box-filled-1" &&
         e.target.className !== "box box-filled-2") {
       if (xo === 0) {
         e.target.className = "box box-filled-1";
+        // Checks for a win everytime a box is filled in.
         if (checkWin("box box-filled-1")) {
           gameOver(player1);
         }
+        // xo is set to 1 to indicate that it is player x's turn.
         xo = 1;
         currentPlayer = player.currentPlayer(xo);
         counter++;
       } else {
+        // Same as above but for the X.
         e.target.className = "box box-filled-2";
         if (checkWin("box box-filled-2")) {
             gameOver(player2);
@@ -136,7 +148,9 @@ function boxSelect(e) {
   e.stopPropagation();
 }
 
+// This function checks every possible win by the className.
 function checkWin(className) {
+  // Every possible win in tic-tac-toe.
   var possWins = [
     [0, 1, 2],
     [3, 4, 5],
@@ -147,7 +161,9 @@ function checkWin(className) {
     [0, 4, 8],
     [2, 4, 6]
   ];
+  // Winner starts as false.
   var win = false;
+  // Goes through each possible combination to check for a win.
   for (var i = 0; i < possWins.length; i++) {
     var counter = 0;
     for (var j = 0; j < possWins[i].length; j++) {
@@ -155,6 +171,7 @@ function checkWin(className) {
       if (individualBoxes[key].className === className) {
         counter++;
       }
+      // If counter reaches 3. That means somebody got 3 in a row.
       if (counter === 3) {
         win = true;
         break;
@@ -163,20 +180,23 @@ function checkWin(className) {
   }
   return win;
 }
-
+// Sets the End Message
 var endMessage = document.getElementsByClassName("message")[0];
 
 function gameOver(winner) {
+  // Game board disappears
   gameBoard.style.display = "none";
   endMessage.innerHTML = "You Won!!!!!!";
+  // Decides if a player won, or the game was a draw.
   if (winner === player1) {
-    finishGame.className = "screen screen-win-one";
+    finishGame.className = "screen screen-win screen-win-one";
   } else if (winner === player2) {
-    finishGame.className = "screen screen-win-two";
+    finishGame.className = "screen screen-win screen-win-two";
   } else {
-    finishGame.className = "screen screen-win-draw";
+    finishGame.className = "screen screen-win screen-win-draw";
     endMessage.innerHTML = "It's a draw";
   }
+  // Displays the final screen with the appropriate text and styling.
   finishGame.style.display = "block";
 }
 
